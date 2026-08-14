@@ -1,0 +1,1209 @@
+/* ============================================================
+   LIFE DASHBOARD — style.css
+   Structure:
+   1. CSS Custom Properties (tokens)
+   2. Reset & Base
+   3. Typography
+   4. Layout — Header
+   5. Layout — Dashboard Grid
+   6. Layout — Footer
+   7. Components — Card
+   8. Components — Greeting
+   9. Components — Focus Timer
+   10. Components — To-Do List
+   11. Components — Quick Links
+   12. Components — Buttons
+   13. Components — Inputs
+   14. Components — Modal
+   15. Utilities
+   16. Dark Mode
+   17. Responsive
+   ============================================================ */
+
+/* ============================================================
+   1. CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+   ============================================================ */
+:root {
+  /* --- Color palette --- */
+  --color-bg:          #f0f2f7;
+  --color-surface:     #ffffff;
+  --color-surface-alt: #f7f8fc;
+  --color-border:      #e2e5ef;
+  --color-shadow:      rgba(0, 0, 0, 0.07);
+
+  --color-text-primary:   #1a1d2e;
+  --color-text-secondary: #5a6080;
+  --color-text-muted:     #9aa0bc;
+  --color-text-inverse:   #ffffff;
+
+  --color-accent:       #5b6af5;
+  --color-accent-hover: #4757e8;
+  --color-accent-light: #eef0fe;
+
+  --color-success:       #22c55e;
+  --color-success-light: #dcfce7;
+  --color-danger:        #ef4444;
+  --color-danger-light:  #fee2e2;
+  --color-warning:       #f59e0b;
+  --color-warning-light: #fef3c7;
+
+  /* --- Greeting gradient --- */
+  --color-greeting-from: #5b6af5;
+  --color-greeting-to:   #8b5cf6;
+
+  /* --- Typography --- */
+  --font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont,
+                 'Helvetica Neue', Arial, sans-serif;
+  --font-size-xs:   0.75rem;   /* 12px */
+  --font-size-sm:   0.875rem;  /* 14px */
+  --font-size-base: 1rem;      /* 16px */
+  --font-size-md:   1.125rem;  /* 18px */
+  --font-size-lg:   1.25rem;   /* 20px */
+  --font-size-xl:   1.5rem;    /* 24px */
+  --font-size-2xl:  2rem;      /* 32px */
+  --font-size-3xl:  3rem;      /* 48px */
+
+  /* --- Spacing scale --- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* --- Borders & shadows --- */
+  --radius-sm:  0.375rem;
+  --radius-md:  0.75rem;
+  --radius-lg:  1rem;
+  --radius-xl:  1.5rem;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.05);
+
+  /* --- Transitions --- */
+  --transition-fast:   150ms ease;
+  --transition-base:   250ms ease;
+  --transition-slow:   350ms ease;
+
+  /* --- Layout --- */
+  --header-height: 64px;
+  --dashboard-max-width: 1200px;
+  --dashboard-gap: var(--space-6);
+  --card-padding: var(--space-6);
+}
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color var(--transition-slow),
+              color var(--transition-slow);
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   3. TYPOGRAPHY
+   ============================================================ */
+h1, h2, h3, h4 {
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
+   4. LAYOUT — HEADER
+   ============================================================ */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-height);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-8);
+  transition: background-color var(--transition-slow),
+              border-color var(--transition-slow);
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.header__icon {
+  width: 28px;
+  height: 28px;
+  color: var(--color-accent);
+}
+
+.header__title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast),
+              transform var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: scale(1.05);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Show moon in light mode, sun in dark mode */
+.icon-moon { display: block; }
+.icon-sun  { display: none;  }
+
+/* ============================================================
+   5. LAYOUT — DASHBOARD GRID
+   ============================================================ */
+.dashboard {
+  max-width: var(--dashboard-max-width);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: var(--dashboard-gap);
+}
+
+/* Greeting spans full width */
+.card--greeting {
+  grid-column: 1 / -1;
+}
+
+/* To-Do spans full width on larger screens */
+.card--todo {
+  grid-column: 1 / -1;
+}
+
+/* ============================================================
+   6. LAYOUT — FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: var(--space-6) var(--space-8);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  transition: background-color var(--transition-slow),
+              border-color var(--transition-slow);
+}
+
+/* ============================================================
+   7. COMPONENTS — CARD
+   ============================================================ */
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  padding: var(--card-padding);
+  border: 1px solid var(--color-border);
+  transition: background-color var(--transition-slow),
+              border-color var(--transition-slow),
+              box-shadow var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+  gap: var(--space-4);
+}
+
+.card__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.card__title svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-accent);
+}
+
+/* ============================================================
+   8. COMPONENTS — GREETING CARD
+   ============================================================ */
+.card--greeting {
+  background: linear-gradient(135deg,
+    var(--color-greeting-from) 0%,
+    var(--color-greeting-to) 100%);
+  color: var(--color-text-inverse);
+  border-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+  padding: var(--space-8) var(--card-padding);
+}
+
+.card--greeting:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Time & Date block */
+.greeting__time-wrap {
+  text-align: left;
+}
+
+.greeting__time {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: var(--space-1);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.greeting__date {
+  font-size: var(--font-size-sm);
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+/* Message & Name block */
+.greeting__message {
+  flex: 1;
+  text-align: right;
+}
+
+.greeting__label {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  opacity: 0.9;
+  margin-bottom: var(--space-2);
+}
+
+.greeting__name-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.greeting__name {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  border-bottom: 2px dashed rgba(255,255,255,0.5);
+  padding-bottom: 2px;
+  transition: border-color var(--transition-fast),
+              opacity var(--transition-fast);
+}
+
+.greeting__name:hover {
+  border-color: rgba(255,255,255,0.9);
+  opacity: 0.9;
+}
+
+/* Edit name form */
+.greeting__name-edit {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+}
+
+.input-name {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: var(--radius-md);
+  color: var(--color-text-inverse);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  outline: none;
+  transition: background var(--transition-fast),
+              border-color var(--transition-fast);
+  width: 200px;
+}
+
+.input-name::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.input-name:focus {
+  background: rgba(255,255,255,0.3);
+  border-color: rgba(255,255,255,0.9);
+}
+
+/* Edit icon button on greeting */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  transition: background var(--transition-fast),
+              color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.btn-icon:hover {
+  background: rgba(255,255,255,0.35);
+  color: #ffffff;
+}
+
+.btn-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ============================================================
+   9. COMPONENTS — FOCUS TIMER
+   ============================================================ */
+.card--timer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.timer__display {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--color-accent);
+  line-height: 1;
+  padding: var(--space-4) 0;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-accent-light);
+  transition: background-color var(--transition-base),
+              color var(--transition-base);
+}
+
+.timer__display.running {
+  background-color: var(--color-success-light);
+  color: var(--color-success);
+  animation: timerPulse 2s ease-in-out infinite;
+}
+
+.timer__display.ended {
+  background-color: var(--color-warning-light);
+  color: var(--color-warning);
+}
+
+@keyframes timerPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.75; }
+}
+
+.timer__status {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.timer__controls {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Pomodoro duration setting */
+.timer__setting {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.setting__label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+  text-align: left;
+}
+
+.timer__setting-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* ============================================================
+   10. COMPONENTS — TO-DO LIST
+   ============================================================ */
+.card--todo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Add task form */
+.todo__form {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.todo__warning {
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+  background-color: var(--color-danger-light);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+/* Stats bar */
+.todo__stats {
+  display: flex;
+  gap: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.todo__stats span:first-child::before { content: "📋 "; }
+.todo__stats span:last-child::before  { content: "✅ "; }
+
+/* Sort select */
+.select-sort {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast),
+              background-color var(--transition-slow);
+}
+
+.select-sort:focus {
+  border-color: var(--color-accent);
+}
+
+/* Empty state */
+.todo__empty,
+.links__empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  padding: var(--space-6) 0;
+}
+
+/* Task list */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: var(--space-1);
+}
+
+/* Custom scrollbar */
+.task-list::-webkit-scrollbar { width: 4px; }
+.task-list::-webkit-scrollbar-track { background: transparent; }
+.task-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+/* Individual task item */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              transform var(--transition-fast),
+              opacity var(--transition-base);
+  animation: slideIn 200ms ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.task-item:hover {
+  background-color: var(--color-accent-light);
+  border-color: var(--color-accent);
+  transform: translateX(2px);
+}
+
+.task-item.completed {
+  opacity: 0.6;
+  background-color: var(--color-success-light);
+  border-color: var(--color-success);
+}
+
+.task-item.completed .task-item__text {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+/* Custom checkbox */
+.task-item__checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color var(--transition-fast),
+              background-color var(--transition-fast);
+}
+
+.task-item__checkbox:hover {
+  border-color: var(--color-success);
+}
+
+.task-item__checkbox:checked {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.task-item__checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.task-item__text {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  word-break: break-word;
+  transition: color var(--transition-fast),
+              text-decoration var(--transition-fast);
+}
+
+/* Task action buttons */
+.task-item__actions {
+  display: flex;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.task-item:hover .task-item__actions {
+  opacity: 1;
+}
+
+.task-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast);
+}
+
+.task-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.task-btn--edit {
+  color: var(--color-text-muted);
+}
+
+.task-btn--edit:hover {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.task-btn--delete {
+  color: var(--color-text-muted);
+}
+
+.task-btn--delete:hover {
+  background-color: var(--color-danger-light);
+  color: var(--color-danger);
+}
+
+/* ============================================================
+   11. COMPONENTS — QUICK LINKS
+   ============================================================ */
+.card--links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.links__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.links__form .btn {
+  align-self: flex-start;
+}
+
+.links__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: var(--space-3);
+}
+
+/* Individual link item */
+.link-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              transform var(--transition-fast),
+              box-shadow var(--transition-fast);
+  animation: slideIn 200ms ease;
+}
+
+.link-item:hover {
+  background-color: var(--color-accent-light);
+  border-color: var(--color-accent);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.link-item__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.link-item__anchor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  width: 100%;
+}
+
+.link-item__name {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+.link-item__delete {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-danger);
+  color: white;
+  font-size: 12px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast),
+              transform var(--transition-fast);
+}
+
+.link-item:hover .link-item__delete {
+  opacity: 1;
+}
+
+.link-item__delete:hover {
+  transform: scale(1.15);
+  background-color: #c53030;
+}
+
+/* ============================================================
+   12. COMPONENTS — BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1;
+  border: 1px solid transparent;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast),
+              transform var(--transition-fast),
+              box-shadow var(--transition-fast);
+  white-space: nowrap;
+  height: 38px;
+}
+
+.btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Primary */
+.btn--primary {
+  background-color: var(--color-accent);
+  color: var(--color-text-inverse);
+  border-color: var(--color-accent);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+/* Secondary */
+.btn--secondary {
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-primary);
+  border-color: var(--color-text-muted);
+}
+
+/* Ghost */
+.btn--ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  border-color: transparent;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+/* Small variant */
+.btn--sm {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-xs);
+  height: 30px;
+}
+
+/* ============================================================
+   13. COMPONENTS — INPUTS
+   ============================================================ */
+.input-text {
+  flex: 1;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  outline: none;
+  height: 38px;
+  transition: border-color var(--transition-fast),
+              background-color var(--transition-slow),
+              box-shadow var(--transition-fast);
+}
+
+.input-text::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input-text:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(91, 106, 245, 0.12);
+}
+
+.input-number {
+  width: 80px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+  height: 38px;
+  transition: border-color var(--transition-fast),
+              background-color var(--transition-slow);
+}
+
+.input-number:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(91, 106, 245, 0.12);
+}
+
+/* ============================================================
+   14. COMPONENTS — MODAL (Edit Task)
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  backdrop-filter: blur(2px);
+  animation: fadeIn 150ms ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  animation: slideUp 200ms ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal__title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.modal__actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+/* ============================================================
+   15. UTILITIES
+   ============================================================ */
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================
+   16. DARK MODE
+   ============================================================ */
+[data-theme="dark"] {
+  --color-bg:          #0f1117;
+  --color-surface:     #1a1d2e;
+  --color-surface-alt: #232640;
+  --color-border:      #2e3153;
+  --color-shadow:      rgba(0, 0, 0, 0.4);
+
+  --color-text-primary:   #e8eaf6;
+  --color-text-secondary: #9aa0bc;
+  --color-text-muted:     #5a6080;
+
+  --color-accent:       #7c87f7;
+  --color-accent-hover: #6472f5;
+  --color-accent-light: #1e2148;
+
+  --color-success:       #34d399;
+  --color-success-light: #0d2e20;
+  --color-danger:        #f87171;
+  --color-danger-light:  #2d1515;
+  --color-warning:       #fbbf24;
+  --color-warning-light: #2d2205;
+
+  --color-greeting-from: #3b45c8;
+  --color-greeting-to:   #6d3fc4;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.2);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.45), 0 4px 8px rgba(0,0,0,0.25);
+}
+
+[data-theme="dark"] .icon-moon { display: none;  }
+[data-theme="dark"] .icon-sun  { display: block; }
+
+[data-theme="dark"] .select-sort {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .input-text,
+[data-theme="dark"] .input-number {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .input-text::placeholder {
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .modal {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+/* ============================================================
+   17. RESPONSIVE
+   ============================================================ */
+
+/* Tablet: 2 columns for timer and links, todo full width */
+@media (max-width: 900px) {
+  .dashboard {
+    padding: var(--space-6) var(--space-4);
+  }
+}
+
+/* Mobile: single column */
+@media (max-width: 640px) {
+  :root {
+    --card-padding: var(--space-5);
+    --dashboard-gap: var(--space-4);
+  }
+
+  .header {
+    padding: 0 var(--space-5);
+  }
+
+  .header__title {
+    font-size: var(--font-size-base);
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .card--greeting {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-4);
+  }
+
+  .greeting__time-wrap {
+    text-align: center;
+  }
+
+  .greeting__time {
+    font-size: var(--font-size-2xl);
+  }
+
+  .greeting__message {
+    text-align: center;
+  }
+
+  .greeting__name-wrap {
+    justify-content: center;
+  }
+
+  .greeting__name-edit {
+    justify-content: center;
+  }
+
+  .greeting__name {
+    font-size: var(--font-size-xl);
+  }
+
+  .timer__controls {
+    gap: var(--space-2);
+  }
+
+  .timer__controls .btn {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-xs);
+  }
+
+  .todo__form {
+    flex-direction: column;
+  }
+
+  .todo__form .btn {
+    align-self: flex-end;
+  }
+
+  .links__form .btn {
+    align-self: stretch;
+  }
+
+  .timer__display {
+    font-size: var(--font-size-2xl);
+  }
+
+  .task-item__actions {
+    opacity: 1;
+  }
+
+  .modal {
+    padding: var(--space-6);
+  }
+}
+
+@media (max-width: 360px) {
+  .greeting__time {
+    font-size: 1.75rem;
+  }
+
+  .timer__display {
+    font-size: 1.75rem;
+  }
+}
